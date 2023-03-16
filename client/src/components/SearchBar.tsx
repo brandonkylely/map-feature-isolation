@@ -93,6 +93,7 @@ export default function SearchBar() {
     
     let res = await fetch(requestUrl);
     console.log('its broken')
+    
     // nearbySearch(requestUrl);
     //take this requestUrl
     //push it to back end
