@@ -8,14 +8,14 @@ import { userAtom } from "./state";
 import { test } from "./api";
 
 function App() {
-  const setUser = useSetAtom(userAtom);
-  useEffect(() => {
-    const tokenData = token.getToken();
-    tokenData && setUser(tokenData.data);
-    console.log('use effect App')
-    test()
-    // optional, if no want on main page, you can redirect if no token or expired token
-  }, []);
+  // const setUser = useSetAtom(userAtom);
+  // useEffect(() => {
+  //   const tokenData = token.getToken();
+  //   tokenData && setUser(tokenData.data);
+  //   console.log('use effect App')
+  //   test()
+  //   // optional, if no want on main page, you can redirect if no token or expired token
+  // }, []);
   return (
     <Router>
       {/* quick links for better dev exp, make look nice or remove later */}
@@ -28,7 +28,7 @@ function App() {
       {/* quick links for better dev exp, make look nice or remove later */}
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/signup" element={<Signup />} />
+        {/* <Route path="/signup" element={<Signup />} /> */}
       </Routes>
     </Router>
   );

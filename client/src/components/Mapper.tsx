@@ -28,12 +28,12 @@ const mapOptions = {
 
   // @ts-ignore
 export default function Mapper(props) {
-  useEffect(() => {
-    console.log('use effect mapper function')
-    fetch("/api/test")
-      .then((r) => r.json())
-      .then((d) => console.log(d));
-  }, []);
+  // useEffect(() => {
+  //   console.log('use effect mapper function')
+  //   fetch("/api/test")
+  //     .then((r) => r.json())
+  //     .then((d) => console.log(d));
+  // }, []);
   return (
     <Wrapper apiKey={import.meta.env.VITE_APIKEY}>
       <MyMap />
@@ -53,6 +53,7 @@ function MyMap() {
 
   useEffect(() => {
     console.log('use effect myMap')
+    // useEffect gets called twice, use this to say if map exists, only call once
     if (!overlayRef.current) {
       // @ts-ignore
       const instance = new window.google.maps.Map(ref.current, mapOptions);
@@ -77,22 +78,26 @@ function createOverlay(
 ) {
   const overlay = new google.maps.WebGLOverlayView();
   let loader;
-
+  // happens once when the overlay is created
+  // threejs scene setting
   overlay.onAdd = () => {
     const light = new AmbientLight(0xffffff, 0.9);
     scene.add(light);
 
     loader = new GLTFLoader();
     loader.loadAsync("./scooter/scene.gltf").then((object) => {
+      // group => group of lines polygons, may see different terminology
       const group = object.scene;
       group.scale.setScalar(25);
+      // without repositioning, scooter is on its side and floating in the air
       group.rotation.set(Math.PI / 2, 0, 0);
       group.position.setZ(-120);
       scene.add(group);
     });
   };
 
-  //later to type this out
+  //happens only once when we have access to the webgl context
+  // gl variable provided by WebGLOverlayView
   overlay.onContextRestored = ({ gl }: { gl: unknown }) => {
       // @ts-ignore
     setRenderer(
@@ -104,8 +109,10 @@ function createOverlay(
         ...gl.getContextAttributes(),
       })
     );
+    // gives us control of setting renderer before next scene
     renderer.autoClear = false;
-
+    
+// when scene is rendered, 
     // loader.manager.onLoad = () => {
     //   renderer.setAnimationLoop(() => {
     //     map.moveCamera({
@@ -127,6 +134,8 @@ function createOverlay(
     // };
   };
 
+  // happens many times
+  // transformer converts lat and lng to its location in a 3d space
   overlay.onDraw = ({ transformer }) => {
     const matrix = transformer.fromLatLngAltitude({
       lat: mapOptions.center.lat,
@@ -134,12 +143,14 @@ function createOverlay(
       altitude: 120,
     });
     camera.projectionMatrix = new Matrix4().fromArray(matrix);
-
+    // constantly redraw whats in the camera view
     overlay.requestRedraw();
+    // points the camera at the scene
     renderer.render(scene, camera);
+    // good practice, not explained
     renderer.resetState();
   };
-
+  // tells overlay which map to use
   overlay.setMap(map);
 
   return overlay;
