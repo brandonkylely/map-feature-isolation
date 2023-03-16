@@ -7,13 +7,13 @@ router.get("/", async (req, res) => {
   res.render("login");
 });
 
-router.get("/game", async (req, res) => {
-  if (!req.session.loggedIn) {
-    res.redirect("/login");
-    return;
-  }
-  res.render("game", { layout: "startgame" });
-});
+// router.get("/game", async (req, res) => {
+//   if (!req.session.loggedIn) {
+//     res.redirect("/login");
+//     return;
+//   }
+//   res.render("game", { layout: "startgame" });
+// });
 
 
 

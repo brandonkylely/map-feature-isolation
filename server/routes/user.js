@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+// User model does not exist
 const { User } = require("../models/User");
 
 const { auth } = require("../middleware/auth");
