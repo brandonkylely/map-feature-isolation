@@ -41,7 +41,10 @@ type GeoLocationResult = {
 
 export default function SearchBar() {
   // const user = useAtomValue(userAtom);
-  const { currentCoords, setCurrentCoords } = useContext(coordState);
+
+  // const { currentCoords, setCurrentCoords } = useContext(coordState);
+
+  // const {currentCoords, setCurrentCoords} = useState( {lat: 40.7484, lng: 73.9857} )
 
   // if (!localCoordState) {
   //   console.warn('because the local coord state is undefined, the search bar is not being returned );')
@@ -49,7 +52,7 @@ export default function SearchBar() {
   // }
   // const { currentCoords, setCurrentCoords } = localCoordState;
 
-  const cityList: City[] = [];
+  // const cityList: City[] = [];
 
   const [userAddress, setUserAddress] = useState<string>("");
 
@@ -61,14 +64,15 @@ export default function SearchBar() {
 
   const handleFormSubmit: MouseEventHandler = (event) => {
     console.log('running handleFormSubmit');
+    event.preventDefault();
     getCoords(userAddress).then((result) => {
-      event.preventDefault();
-      console.log('logging the input userAdress', userAddress);
-      console.log('logging result of getCoords', result);
+      // console.log('logging the input userAdress', userAddress);
+      // console.log('logging result of getCoords', result);
       // return result.json();
       // alert(`${apiFetch(result)}`);
     });
   };
+
 
   // search address, map with nothing, save
   // second search, with filters, map pops up with businesses in area
@@ -92,8 +96,8 @@ export default function SearchBar() {
     }`;
     
     let res = await fetch(requestUrl);
-    console.log('its broken')
-    
+    // console.log('its broken')
+
     // nearbySearch(requestUrl);
     //take this requestUrl
     //push it to back end
@@ -107,7 +111,6 @@ export default function SearchBar() {
     //calculate distance/duration from origin to each point on the distance matrix
     //turn that combined data into a new object
     //
-
 
     const cityData = (await res.json()) as GeoLocationResult;
     console.log('logging cityData', cityData);
@@ -127,12 +130,12 @@ export default function SearchBar() {
     // console.log(cityList)
     // return city
 
-    let nextUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.748817,-73.985428&radius=15000&type=restaurant&keyword=asian&key=AIzaSyBkMHNxpBmBMaHhnlpHHy63cRktfgiFXIA`;
-    //temporarilty hardcoding Radius, Type, and Keyword, but these will be selectable
-    let res2 = await fetch(nextUrl);
+    // let nextUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.748817,-73.985428&radius=15000&type=restaurant&keyword=asian&key=AIzaSyBkMHNxpBmBMaHhnlpHHy63cRktfgiFXIA`;
+    // //temporarilty hardcoding Radius, Type, and Keyword, but these will be selectable
+    // let res2 = await fetch(nextUrl);
 
-    const nearbySearch = (await res2.json()) as unknown;
-    console.log(nearbySearch);
+    // const nearbySearch = (await res2.json()) as unknown;
+    // console.log(nearbySearch);
    
   }
 
@@ -153,7 +156,6 @@ export default function SearchBar() {
       <form className="max-w-sm px-4 form ">
         {/* JUST POC , THIS IS HOW TO CONSUME */}
         {/* <h1>Logged In as {user?.email}</h1> */}
-        <div className="">
           <input
             className="w-small py-1 pl-3 pr-2 text-gray-500 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-indigo-600"
             value={userAddress}
@@ -168,7 +170,6 @@ export default function SearchBar() {
           >
             submit
           </button>
-        </div>
       </form>
     </>
   );
